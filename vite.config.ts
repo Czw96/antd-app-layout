@@ -1,7 +1,35 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import react from "@vitejs/plugin-react";
+import { dirname, resolve } from "path";
+import { fileURLToPath } from "url";
+import { defineConfig, esmExternalRequirePlugin } from "vite";
 
-// https://vite.dev/config/
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
 export default defineConfig({
-  plugins: [react()],
-})
+  plugins: [
+    react(),
+    esmExternalRequirePlugin({
+      external: ["react", "react-dom", "react/jsx-runtime", "@ant-design/icons"],
+    }),
+  ],
+  build: {
+    emptyOutDir: false,
+    lib: {
+      entry: resolve(__dirname, "src/index.ts"),
+      name: "AntdBaseLayout",
+      formats: ["es", "cjs"],
+      fileName: (format) => `index.${format === "es" ? "mjs" : "cjs"}`,
+    },
+    rollupOptions: {
+      external: ["antd"],
+      output: {
+        globals: {
+          react: "React",
+          "react-dom": "ReactDOM",
+          antd: "antd",
+          "@ant-design/icons": "AntDesignIcons",
+        },
+      },
+    },
+  },
+});
