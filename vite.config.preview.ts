@@ -8,7 +8,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 export default defineConfig({
   plugins: [react()],
   root: "./preview",
-  base: "/antd-base-layout/",
+  base: "/antd-app-layout/",
   resolve: {
     alias: {
       "@": resolve(__dirname, "./src"),

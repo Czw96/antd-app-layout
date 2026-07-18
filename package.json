@@ -1,8 +1,8 @@
 {
-  "name": "antd-base-layout",
+  "name": "antd-app-layout",
   "type": "module",
-  "version": "0.0.0",
-  "description": "A base layout component for Ant Design",
+  "version": "1.0.0",
+  "description": "An app layout component for Ant Design",
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",

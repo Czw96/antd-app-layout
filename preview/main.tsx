@@ -1,9 +1,9 @@
 import { DatabaseOutlined, DesktopOutlined, HomeOutlined, MailOutlined, SearchOutlined, UserOutlined } from "@ant-design/icons";
-import { Button, Card, Divider, Dropdown, Flex, Input, Space, Statistic, Table, Tag, Typography } from "antd";
+import { Avatar, Button, Card, Flex, Input, Space, Statistic, Table, Tag, Typography } from "antd";
 import type { MenuProps } from "antd";
 import { StrictMode, useState } from "react";
 import { createRoot } from "react-dom/client";
-import { BaseLayout } from "../src/index";
+import { AppLayout } from "../src/index";
 
 const menuItems: MenuProps["items"] = [
   { key: "/home", label: "首页", icon: <HomeOutlined /> },
@@ -140,52 +140,26 @@ function Preview() {
 
   return (
     <StrictMode>
-      <BaseLayout
+      <AppLayout
         menuItems={menuItems}
         menuActiveKey={activeKey}
         onMenuClick={({ key }) => setActiveKey(key)}
         headerExtra={
-          <Flex align="center" gap={0}>
+          <Space size={4}>
             <Button type="text" size="large" icon={<MailOutlined style={{ fontSize: 18 }} />} />
-            <Divider type="vertical" style={{ height: 36 }} />
-            <Dropdown
-              menu={{
-                items: [
-                  { key: "profile", label: `当前页面: ${labelMap[activeKey] || activeKey}`, disabled: true },
-                  { type: "divider" },
-                  { key: "logout", label: "退出登录", icon: <UserOutlined /> },
-                ],
-              }}
-            >
-              <Button type="text" size="large" icon={<UserOutlined style={{ fontSize: 18 }} />}>
-                Admin
-              </Button>
-            </Dropdown>
-          </Flex>
+            <Button type="text" size="large" icon={<UserOutlined style={{ fontSize: 18 }} />}>Admin</Button>
+          </Space>
         }
         siderFooter={
           <Flex vertical style={{ borderTop: "1px solid rgba(255,255,255,0.08)" }}>
             <Flex align="center" gap={8} style={{ padding: "12px 16px" }}>
-              <div
-                style={{
-                  width: 28,
-                  height: 28,
-                  borderRadius: "50%",
-                  background: "rgba(255,255,255,0.1)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  fontSize: 12,
-                  color: "rgba(255,255,255,0.65)",
-                  flexShrink: 0,
-                }}
-              >
+              <Avatar size={28} style={{ background: "rgba(255,255,255,0.15)", color: "rgba(255,255,255,0.65)", fontSize: 12, flexShrink: 0 }}>
                 A
-              </div>
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ color: "rgba(255,255,255,0.85)", fontSize: 13, lineHeight: "18px" }}>Admin</div>
-                <div style={{ color: "rgba(255,255,255,0.35)", fontSize: 11, lineHeight: "16px" }}>admin@example.com</div>
-              </div>
+              </Avatar>
+              <Flex vertical style={{ flex: 1, minWidth: 0, lineHeight: 1.4 }}>
+                <Typography.Text style={{ color: "rgba(255,255,255,0.85)", fontSize: 13 }}>Admin</Typography.Text>
+                <Typography.Text style={{ color: "rgba(255,255,255,0.35)", fontSize: 11 }}>admin@example.com</Typography.Text>
+              </Flex>
             </Flex>
           </Flex>
         }

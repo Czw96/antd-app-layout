@@ -1,12 +1,10 @@
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
 import type { MenuProps } from "antd";
-import { Layout, Menu } from "antd";
+import { Button, Layout, Menu } from "antd";
 import type React from "react";
 import { useEffect, useState } from "react";
 
-import type { BaseLayoutProps } from "./types";
-
-const { Sider, Header, Content } = Layout;
+import type { AppLayoutProps } from "./types";
 
 const siderWidth = 200;
 
@@ -31,26 +29,18 @@ const defaultPlaceholderStyle: React.CSSProperties = {
   background: "#fff5",
 };
 
-const toggleBtnStyle: React.CSSProperties = {
-  display: "inline-flex",
-  alignItems: "center",
-  justifyContent: "center",
-  width: 40,
-  height: 40,
-  fontSize: 16,
-  color: "#595959",
-  cursor: "pointer",
-  borderRadius: 6,
-  border: "none",
-  background: "transparent",
-};
-
+/**
+ * 根据当前菜单项 key 查找其所有父级菜单组的 key。
+ * 遍历 Menu items 顶层节点，检查每个节点的 children 是否包含 activeKey。
+ * "children" in item 和 "key" in item 双重判断是为了排除 ItemGroupType
+ *（有 children 但无 key），只处理 SubMenuType。
+ */
 function computeParentKeys(items: MenuProps["items"], activeKey: string): string[] {
   if (!items || !activeKey) return [];
   const result: string[] = [];
   for (const item of items) {
-    if (item && "children" in item && Array.isArray(item.children)) {
-      const hasMatch = (item.children as { key?: string }[]).some((child) => child.key === activeKey);
+    if (item && "children" in item && "key" in item && Array.isArray(item.children)) {
+      const hasMatch = (item.children as Array<{ key?: string }>).some((child) => child.key === activeKey);
       if (hasMatch) {
         result.push(item.key as string);
       }
@@ -59,19 +49,18 @@ function computeParentKeys(items: MenuProps["items"], activeKey: string): string
   return result;
 }
 
-function BaseLayout(props: BaseLayoutProps): React.ReactElement {
-  const { menuItems, menuActiveKey, onMenuClick, headerExtra, siderHeader, siderFooter, pageContent } = props;
-
+function AppLayout(properties: AppLayoutProps): React.ReactElement {
+  const { menuItems, menuActiveKey, onMenuClick, headerExtra, siderHeader, siderFooter, pageContent } = properties;
   const [collapsed, setCollapsed] = useState(false);
 
-  // 菜单展开状态
+  // 菜单展开状态，初始根据当前路由展开对应父级菜单
   const [openKeys, setOpenKeys] = useState<string[]>(() => computeParentKeys(menuItems, menuActiveKey ?? ""));
 
-  // 路由变化时展开对应父级菜单
+  // 路由变化时展开对应父级菜单，但保留用户手动展开/折叠的状态
   useEffect(() => {
     const parentKeys = computeParentKeys(menuItems, menuActiveKey ?? "");
-    setOpenKeys((prev) => {
-      const merged = [...prev];
+    setOpenKeys((previous) => {
+      const merged = [...previous];
       for (const key of parentKeys) {
         if (!merged.includes(key)) merged.push(key);
       }
@@ -81,7 +70,11 @@ function BaseLayout(props: BaseLayoutProps): React.ReactElement {
 
   return (
     <Layout style={{ height: "100vh" }}>
-      <Sider
+      {/*
+        不使用 Sider 的 collapsible + collapsed 机制（会触发 Menu 切换模式导致弹窗和状态丢失），
+        直接用 width 在 0 ↔ siderWidth 之间切换，搭配 transition 实现折叠/展开动画。
+      */}
+      <Layout.Sider
         trigger={null}
         theme="dark"
         width={collapsed ? 0 : siderWidth}
@@ -90,6 +83,10 @@ function BaseLayout(props: BaseLayoutProps): React.ReactElement {
           transition: "all 0.2s",
         }}
       >
+        {/*
+          内层容器设固定 minWidth/maxWidth 为 siderWidth，使菜单布局始终以 200px 排版。
+          Sider 宽度为 0 时内容被 overflow: hidden 裁切，宽度过渡展开时自然露出，避免重影。
+        */}
         <div
           style={{
             display: "flex",
@@ -116,27 +113,21 @@ function BaseLayout(props: BaseLayoutProps): React.ReactElement {
           </div>
           {siderFooter !== undefined && <div style={{ flexShrink: 0 }}>{siderFooter}</div>}
         </div>
-      </Sider>
+      </Layout.Sider>
       <Layout>
-        <Header style={headerStyle}>
-          <button
-            style={toggleBtnStyle}
-            onClick={() => setCollapsed((prev) => !prev)}
-            onMouseEnter={(e) => {
-              (e.currentTarget as HTMLElement).style.background = "#f5f5f5";
-            }}
-            onMouseLeave={(e) => {
-              (e.currentTarget as HTMLElement).style.background = "transparent";
-            }}
-          >
-            {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-          </button>
+        <Layout.Header style={headerStyle}>
+          <Button
+            type="text"
+            icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+            size="large"
+            onClick={() => setCollapsed((previous) => !previous)}
+          />
           <div>{headerExtra}</div>
-        </Header>
-        <Content style={contentStyle}>{pageContent}</Content>
+        </Layout.Header>
+        <Layout.Content style={contentStyle}>{pageContent}</Layout.Content>
       </Layout>
     </Layout>
   );
 }
 
-export default BaseLayout;
+export default AppLayout;

@@ -1,7 +1,7 @@
 import type { MenuProps } from "antd";
 import type React from "react";
 
-export interface BaseLayoutProps {
+export interface AppLayoutProps {
   /** 菜单配置 */
   menuItems: MenuProps["items"];
   /** 当前选中的菜单项 key */

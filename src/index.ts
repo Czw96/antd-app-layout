@@ -1,2 +1,2 @@
-export { default as BaseLayout } from "./BaseLayout";
-export type { BaseLayoutProps } from "./types";
+export { default as AppLayout } from "./AppLayout";
+export type { AppLayoutProps } from "./types";

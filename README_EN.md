@@ -1,6 +1,6 @@
 <p align="center">
   <h1 align="center">antd-app-layout</h1>
-  <p align="center">基于 Ant Design 的应用布局组件，提供可折叠侧边栏、可配置菜单、顶栏插槽等能力。</p>
+  <p align="center">An app layout component for Ant Design with a collapsible sidebar, configurable menu, and header slot.</p>
 </p>
 
 <p align="center">
@@ -10,33 +10,33 @@
   <a href="https://github.com/Czw96/antd-app-layout"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen" alt="PRs Welcome" /></a>
 </p>
 
-中文 | [English](./README_EN.md)
+[中文](./README.md) | English
 
 ---
 
-## 安装
+## Installation
 
 ```bash
 npm install antd-app-layout
 ```
 
-## 在线演示
+## Demo
 
-本地启动预览：
+Start the local preview:
 
 ```bash
 npm run preview
 ```
 
-## 依赖要求
+## Peer Dependencies
 
-| 依赖 | 版本 |
-|------|------|
+| Dependency | Version |
+|------------|---------|
 | react | >=18.2.0 |
 | react-dom | >=18.2.0 |
 | antd | >=6.0.0 |
 
-## 使用示例
+## Usage
 
 ```tsx
 import { AppLayout } from "antd-app-layout";
@@ -48,23 +48,23 @@ import {
 } from "@ant-design/icons";
 
 const menuItems: MenuProps["items"] = [
-  { key: "/home", label: "首页", icon: <HomeOutlined /> },
+  { key: "/home", label: "Home", icon: <HomeOutlined /> },
   {
     key: "/data",
-    label: "基础数据",
+    label: "Data",
     icon: <DatabaseOutlined />,
     children: [
-      { key: "/customer_list", label: "客户管理" },
-      { key: "/product_list", label: "产品管理" },
+      { key: "/customer_list", label: "Customers" },
+      { key: "/product_list", label: "Products" },
     ],
   },
   {
     key: "/system",
-    label: "系统设置",
+    label: "System",
     icon: <DesktopOutlined />,
     children: [
-      { key: "/role_list", label: "角色权限" },
-      { key: "/user_list", label: "用户管理" },
+      { key: "/role_list", label: "Roles" },
+      { key: "/user_list", label: "Users" },
     ],
   },
 ];
@@ -86,13 +86,13 @@ function Dashboard() {
           <span style={{ color: "#fff", fontSize: 18, fontWeight: "bold" }}>MyApp</span>
         </Flex>
       }
-      pageContent={<div style={{ padding: 24 }}>页面内容</div>}
+      pageContent={<div style={{ padding: 24 }}>Page content</div>}
     />
   );
 }
 ```
 
-### 配合 react-router-dom
+### With react-router-dom
 
 ```tsx
 import { AppLayout } from "antd-app-layout";
@@ -113,7 +113,7 @@ function AppLayoutWrapper() {
 }
 ```
 
-### 侧边栏底部插槽
+### Sidebar Footer
 
 ```tsx
 <AppLayout
@@ -122,7 +122,7 @@ function AppLayoutWrapper() {
     <Flex align="center" gap={8} style={{ padding: "12px 16px", borderTop: "1px solid rgba(255,255,255,0.08)" }}>
       <Avatar size={28} style={{ background: "rgba(255,255,255,0.15)" }}>U</Avatar>
       <div>
-        <div style={{ color: "rgba(255,255,255,0.85)", fontSize: 13 }}>用户名</div>
+        <div style={{ color: "rgba(255,255,255,0.85)", fontSize: 13 }}>Username</div>
         <div style={{ color: "rgba(255,255,255,0.35)", fontSize: 11 }}>user@example.com</div>
       </div>
     </Flex>
@@ -135,46 +135,46 @@ function AppLayoutWrapper() {
 
 ### AppLayoutProps
 
-| 属性 | 类型 | 说明 |
-|------|------|------|
-| `menuItems` | `MenuProps["items"]` | 菜单配置，直接透传 Ant Design Menu 的 items 格式 |
-| `menuActiveKey` | `string` | 当前选中的菜单项 key，对应当前路由 |
-| `onMenuClick` | `MenuProps["onClick"]` | 菜单点击回调 |
-| `headerExtra` | `ReactNode` | 顶栏右侧功能插槽 |
-| `siderHeader` | `ReactNode` | 侧边栏顶部内容，未传时显示默认占位 |
-| `siderFooter` | `ReactNode` | 侧边栏底部内容，常用于用户信息、版本号等 |
-| `pageContent` | `ReactNode` | 页面内容区域 |
+| Property | Type | Description |
+|----------|------|-------------|
+| `menuItems` | `MenuProps["items"]` | Menu configuration, passed directly to Ant Design Menu's `items` format |
+| `menuActiveKey` | `string` | The currently active menu item key, typically the current route |
+| `onMenuClick` | `MenuProps["onClick"]` | Menu click callback |
+| `headerExtra` | `ReactNode` | Content rendered on the right side of the header bar |
+| `siderHeader` | `ReactNode` | Content at the top of the sidebar. A default placeholder is shown when omitted |
+| `siderFooter` | `ReactNode` | Content at the bottom of the sidebar, commonly used for user info or version display |
+| `pageContent` | `ReactNode` | Page content area |
 
-### 导出类型
+### Exports
 
-| 导出 | 说明 |
-|------|------|
-| `AppLayout` | 应用布局组件 |
-| `AppLayoutProps` | 组件 Props 类型 |
+| Export | Description |
+|--------|-------------|
+| `AppLayout` | The app layout component |
+| `AppLayoutProps` | Component props type |
 
-## 功能特性
+## Features
 
-- **可折叠侧边栏**：点击顶栏左侧按钮完全隐藏/显示侧边栏，带平滑动画过渡
-- **可配置菜单**：菜单项通过 `menuItems` prop 传入，支持两级嵌套和任意图标
-- **路由联动**：`menuActiveKey` 驱动菜单高亮和子菜单自动展开
-- **顶栏插槽**：`headerExtra` 支持自由放置通知、用户菜单、设置入口等
-- **侧边栏插槽**：顶部 `siderHeader` 和底部 `siderFooter` 两个插槽，适应品牌展示和用户信息
-- **深色主题**：侧边栏默认 Ant Design 深色主题
-- **内容区滚动**：`pageContent` 超出容器高度时自动内部滚动，不影响布局
+- **Collapsible sidebar**: Toggle the sidebar visibility via the header button with smooth CSS transitions
+- **Configurable menu**: Pass menu items via the `menuItems` prop, supporting two-level nesting and custom icons
+- **Route integration**: `menuActiveKey` drives menu highlight and automatic submenu expansion
+- **Header slot**: `headerExtra` accepts any content — notifications, user menus, settings, etc.
+- **Sidebar slots**: Both `siderHeader` (top) and `siderFooter` (bottom) slots for branding and user info
+- **Dark theme**: Sidebar defaults to Ant Design's dark theme
+- **Content scrolling**: `pageContent` scrolls internally when content overflows, keeping the layout intact
 
-## 本地开发
+## Development
 
 ```bash
 git clone https://github.com/Czw96/antd-app-layout.git
 cd antd-app-layout
 npm install
 
-npm run dev         # 监听构建
-npm run build       # 生产构建
-npm run preview     # 启动预览页面
-npm run lint        # 代码检查
+npm run dev         # Watch build
+npm run build       # Production build
+npm run preview     # Start preview page
+npm run lint        # Lint
 ```
 
-## 许可证
+## License
 
 MIT © Czw96
