@@ -15,6 +15,6 @@ export default defineConfig({
     },
   },
   build: {
-    outDir: "../dist-preview",
+    outDir: "/var/www/demo.29dev.cn/antd-app-layout",
   },
 });
